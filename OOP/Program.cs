@@ -57,10 +57,12 @@ namespace OOP
             var cacheExp = new DateTimeOffset(new DateTime(2024, 1, 20, 7, 0, 0),new TimeSpan(0, 10, 0)
 );
 
-            Document newPatent = StoreManagement.GetStoredFiles<Patent>(patent.UIN);
-            Document newBook = StoreManagement.GetStoredFiles<Book>(book.ISBN,true, cacheExp);
-            Document newLocalizedBook = StoreManagement.GetStoredFiles<LocalizedBook>(localizedBook.ISBN);
-            Document newMagazine = StoreManagement.GetStoredFiles<Magazine>(magazine.Id);
+            Document newPatent = StoreManagement.GetStoredFilesById<Patent>(patent.UIN);
+            Document newBook = StoreManagement.GetStoredFilesById<Book>(book.ISBN,true, cacheExp);
+            Document newLocalizedBook = StoreManagement.GetStoredFilesById<LocalizedBook>(localizedBook.ISBN);
+            Document newMagazine = StoreManagement.GetStoredFilesById<Magazine>(magazine.Id);
+
+            Document foundBook = StoreManagement.GetStoredFilesByName<Book>(newBook.Title);
 
         }
     }

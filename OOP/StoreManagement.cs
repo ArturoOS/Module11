@@ -21,7 +21,7 @@ namespace OOP
                 writer.WriteLine(fileContent);
             }
         }
-        public static T GetStoredFiles<T>(string id, bool useCache = false, DateTimeOffset? dateTimeOffset = null)
+        public static T GetStoredFilesById<T>(string id, bool useCache = false, DateTimeOffset? dateTimeOffset = null)
         {
             DirectoryInfo dir = new DirectoryInfo(Environment.CurrentDirectory + "/");
             FileInfo[] files = dir.GetFiles("*"+id+".json");
@@ -35,6 +35,23 @@ namespace OOP
             }
             T newDocument = JsonConvert.DeserializeObject<T>(docString);
             return newDocument;
+        }
+
+        public static T GetStoredFilesByName<T>(string title) where T : new()
+        {
+            DirectoryInfo dir = new DirectoryInfo(Environment.CurrentDirectory + "/");
+            FileInfo[] files = dir.GetFiles("*.json");
+            foreach (var file in files)
+            {
+                string docString = File.ReadAllText(file.FullName);
+                Document newDocument = JsonConvert.DeserializeObject<Document>(docString);
+                if (newDocument.Title == title)
+                {
+                    return JsonConvert.DeserializeObject<T>(docString);
+                }
+            }
+            T notFound = new T();
+            return notFound;
         }
     }
 }
