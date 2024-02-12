@@ -87,8 +87,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Book.cs" />
+    <Compile Include="CMDInterfarce.cs" />
     <Compile Include="Document.cs" />
     <Compile Include="IDocument.cs" />
+    <Compile Include="IUserInterface.cs" />
     <Compile Include="LocalizedBook.cs" />
     <Compile Include="Magazine.cs" />
     <Compile Include="Patent.cs" />

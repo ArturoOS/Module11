@@ -44,6 +44,7 @@ namespace OOP
             {
                 Id = "tR98765432A",
                 Title = "TheGreatMagazine",
+                Authors = new List<string>() { "TheGreatMagazineAuthor" },
                 Publisher = "TheGreatMagazinePublisher",
                 ReleaseNumber=1,
                 DatePublised = DateTime.Now
@@ -54,15 +55,17 @@ namespace OOP
             StoreManagement.StoreInFile(localizedBook);
             StoreManagement.StoreInFile(magazine);
 
-            var cacheExp = new DateTimeOffset(new DateTime(2024, 1, 20, 7, 0, 0),new TimeSpan(0, 10, 0)
-);
+            CMDInterfarce cmdInterfarce = new CMDInterfarce();
+            cmdInterfarce.ShowInterface();
 
-            Document newPatent = StoreManagement.GetStoredFilesById<Patent>(patent.UIN);
-            Document newBook = StoreManagement.GetStoredFilesById<Book>(book.ISBN,true, cacheExp);
-            Document newLocalizedBook = StoreManagement.GetStoredFilesById<LocalizedBook>(localizedBook.ISBN);
-            Document newMagazine = StoreManagement.GetStoredFilesById<Magazine>(magazine.Id);
+            //var cacheExp = new DateTimeOffset(new DateTime(2024, 1, 20, 7, 0, 0),new TimeSpan(0, 10, 0));
 
-            Document foundBook = StoreManagement.GetStoredFilesByName<Book>(newBook.Title);
+            //Document newPatent = StoreManagement.GetStoredFilesById<Patent>(patent.UIN);
+            //Document newBook = StoreManagement.GetStoredFilesById<Book>(book.ISBN,true, cacheExp);
+            //Document newLocalizedBook = StoreManagement.GetStoredFilesById<LocalizedBook>(localizedBook.ISBN);
+            //Document newMagazine = StoreManagement.GetStoredFilesById<Magazine>(magazine.Id);
+
+            //Document foundBook = StoreManagement.GetStoredFilesByName<Book>(newBook.Title);
 
         }
     }

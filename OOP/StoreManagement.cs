@@ -16,42 +16,52 @@ namespace OOP
             var doc = document.GetInfoToStoreInFile();
             string filePath = doc.Keys.FirstOrDefault();
             string fileContent = doc.Values.FirstOrDefault();
-            using (StreamWriter writer = new StreamWriter(filePath, true))
+            if (!File.Exists(filePath))
             {
-                writer.WriteLine(fileContent);
+                using (StreamWriter writer = new StreamWriter(filePath, true))
+                {
+                    writer.WriteLine(fileContent);
+                }
             }
         }
         public static T GetStoredFilesById<T>(string id, bool useCache = false, DateTimeOffset? dateTimeOffset = null)
         {
             DirectoryInfo dir = new DirectoryInfo(Environment.CurrentDirectory + "/");
             FileInfo[] files = dir.GetFiles("*"+id+".json");
-            string docString = File.ReadAllText(files[0].FullName);
-            if (useCache)
+            if (files.Count() > 0)
             {
-                ObjectCache cache = MemoryCache.Default;
-                CacheItemPolicy policy = new CacheItemPolicy();
-                policy.AbsoluteExpiration = dateTimeOffset.Value;
-                cache.Set("jsonString", docString, policy);
+                string docString = File.ReadAllText(files[0].FullName);
+                if (useCache)
+                {
+                    ObjectCache cache = MemoryCache.Default;
+                    CacheItemPolicy policy = new CacheItemPolicy();
+                    policy.AbsoluteExpiration = dateTimeOffset.Value;
+                    cache.Set("jsonString", docString, policy);
+                }
+                T newDocument = JsonConvert.DeserializeObject<T>(docString);
+                return newDocument;
             }
-            T newDocument = JsonConvert.DeserializeObject<T>(docString);
-            return newDocument;
+            else
+            {
+                return default(T);
+            }
         }
 
-        public static T GetStoredFilesByName<T>(string title) where T : new()
+        public static List<T> GetStoredFilesByName<T>(string title) where T : new()
         {
+            List<T> list = new List<T>();
             DirectoryInfo dir = new DirectoryInfo(Environment.CurrentDirectory + "/");
             FileInfo[] files = dir.GetFiles("*.json");
             foreach (var file in files)
             {
                 string docString = File.ReadAllText(file.FullName);
                 Document newDocument = JsonConvert.DeserializeObject<Document>(docString);
-                if (newDocument.Title == title)
+                if (newDocument.Title.ToLower().Contains(title.ToLower()))
                 {
-                    return JsonConvert.DeserializeObject<T>(docString);
+                    list.Add(JsonConvert.DeserializeObject<T>(docString));
                 }
             }
-            T notFound = new T();
-            return notFound;
+            return list;
         }
     }
 }
